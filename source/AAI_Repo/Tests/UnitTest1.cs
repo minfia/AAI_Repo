@@ -1,0 +1,41 @@
+using AAI_Repo.Models;
+using NUnit.Framework;
+using System.Collections.Generic;
+
+namespace AAI_Repo.Tests
+{
+    public class Tests1
+    {
+        static InstallItem[] list = new InstallItem[]
+        {
+            new InstallItem{ItemName = "", MakerName = "", URL = "", Version = ""},
+        };
+
+        [SetUp]
+        public void Setup()
+        {
+        }
+
+
+        [TestCaseSource("GetCases")]
+        public void Test1(InstallItem item)
+        {
+            if (item.URL == "") return;
+            LinkChecher linkChecher = new LinkChecher();
+            CheckResult result = linkChecher.CheckStart(item.URL);
+            System.Console.WriteLine($"{item.ItemName}");
+            Assert.AreEqual(CheckResult.Complete, result);
+        }
+
+        static InstallItem[] GetCases()
+        {
+            string aaiPath = $"{System.IO.Path.GetFullPath(".")}\\aai.repo";
+            PreRepoFileR preRepoFileR = new PreRepoFileR(aaiPath);
+            preRepoFileR.Open();
+            preRepoFileR.ReadInstallItemList();
+            preRepoFileR.Close();
+
+            return InstallItemList.GetInstalItemList();
+        }
+    }
+}

@@ -1,0 +1,17 @@
+name: repo_test
+
+on: [push]
+  #  schedule:
+  #    - cron: '* 1 * * *'
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - uses: microsoft/setup-msbuild@v1
+      - uses: nuget/setup-nuget@v1
+      - uses: darenm/Setup-VSTest@v1
+      - run: MSBuild.exe $Env:GITHUB_WORKSPACE\source\AAI_Repo\AAI_Repo.csproj -p:Configuration=Release
+      - run: cp $Env:GITHUB_WORKSPACE\aai.repo $Env:GITHUB_WORKSPACE\source\aai.repo
+      - run: vstest.console.exe $Env:GITHUB_WORKSPACE\source\AAI_Repo\bin\Release\net48\AAI_Repo.dll

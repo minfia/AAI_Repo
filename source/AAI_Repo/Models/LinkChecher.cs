@@ -229,7 +229,17 @@ namespace AAI_Repo.Models
                 }
                 url = $"https://drive.google.com/uc?id={_fileId}";
 
-                return base.IsConnectURL(url);
+                CheckResult res;
+
+                uint Retry = 0;
+
+                do
+                {
+                    res = base.IsConnectURL(url);
+                    Retry++;
+                } while ((res != CheckResult.Complete) && (3 > Retry));
+
+                return res;
             }
         }
     }

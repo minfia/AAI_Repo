@@ -6,11 +6,6 @@ namespace AAI_Repo.Tests
 {
     public class Tests1
     {
-        static InstallItem[] list = new InstallItem[]
-        {
-            new InstallItem{ItemName = "", MakerName = "", URL = "", Version = ""},
-        };
-
         [SetUp]
         public void Setup()
         {
@@ -18,7 +13,7 @@ namespace AAI_Repo.Tests
 
 
         [TestCaseSource("GetCases")]
-        public void Test1(InstallItem item)
+        public void ConnectCheck(InstallItem item)
         {
             if (item.URL == "") return;
             LinkChecher linkChecher = new LinkChecher();
